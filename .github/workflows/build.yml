@@ -5,6 +5,9 @@ on:
   push:
     branches: [ main, master ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,3 +40,10 @@ jobs:
         with:
           name: VideoDownloader-APK
           path: ${{ env.DIR }}/app/build/outputs/apk/debug/*.apk
+
+      - name: Release এ APK দাও
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          files: ${{ env.DIR }}/app/build/outputs/apk/debug/app-debug.apk
